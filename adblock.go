@@ -65,7 +65,6 @@ func NewResponsePrinter(w dns.ResponseWriter) *ResponsePrinter {
 
 // WriteMsg calls the underlying ResponseWriter's WriteMsg method and prints "adblock" to standard output.
 func (r *ResponsePrinter) WriteMsg(res *dns.Msg) error {
-	log.Info("adblock")
 	return r.ResponseWriter.WriteMsg(res)
 }
 
