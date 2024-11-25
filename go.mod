@@ -8,6 +8,7 @@ require (
 	github.com/coredns/caddy v1.1.2-0.20241029205200-8de985351a98
 	github.com/coredns/coredns v1.12.0
 	github.com/miekg/dns v1.1.62
+	github.com/prometheus/client_golang v1.20.5
 )
 
 require (
@@ -22,7 +23,6 @@ require (
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/onsi/ginkgo/v2 v2.19.0 // indirect
 	github.com/opentracing/opentracing-go v1.2.0 // indirect
-	github.com/prometheus/client_golang v1.20.5 // indirect
 	github.com/prometheus/client_model v0.6.1 // indirect
 	github.com/prometheus/common v0.60.1 // indirect
 	github.com/prometheus/procfs v0.15.1 // indirect
