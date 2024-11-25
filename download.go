@@ -27,7 +27,7 @@ func Download() ([]string, error) {
   for _, row := range rows {
     if bytes.HasPrefix(row, []byte("0.0.0.0")) {
       columns := bytes.Split(row, []byte(" "))
-      domains = append(domains, string(columns[1]))
+      domains = append(domains, string(columns[1]) + ".")
     }
   }
   return domains, nil
