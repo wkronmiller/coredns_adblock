@@ -44,6 +44,7 @@ func (e Adblock) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dns.Msg)
     }
 
   }
+  log.Debugf("Allowing Request: %s", qname)
 	pw := NewResponsePrinter(w)
 
 	// Call next plugin (if any).
