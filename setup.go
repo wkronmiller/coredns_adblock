@@ -20,17 +20,15 @@ func setup(c *caddy.Controller) error {
 		return plugin.Error("adblock", c.ArgErr())
 	}
 
-
-  domains, err := Download()
-  if err != nil {
-    plugin.Error("adblock", err)
-  }
+	domains, err := Download()
+	if err != nil {
+		plugin.Error("adblock", err)
+	}
 	// Add the Plugin to CoreDNS, so Servers can use it in their plugin chain.
 	dnsserver.GetConfig(c).AddPlugin(func(next plugin.Handler) plugin.Handler {
-    return Adblock{Next: next, Domains: domains}
+		return Adblock{Next: next, Domains: domains}
 	})
 
 	// All OK, return a nil error.
 	return nil
 }
-

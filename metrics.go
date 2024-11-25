@@ -17,4 +17,3 @@ var requestCount = promauto.NewCounterVec(prometheus.CounterOpts{
 }, []string{"server"})
 
 var once sync.Once
-

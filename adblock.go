@@ -4,12 +4,12 @@
 package coredns_adblock
 
 import (
-  "strings"
 	"context"
-  "github.com/coredns/coredns/plugin/metrics"
 	"github.com/coredns/coredns/plugin"
-  "github.com/coredns/coredns/request"
+	"github.com/coredns/coredns/plugin/metrics"
 	clog "github.com/coredns/coredns/plugin/pkg/log"
+	"github.com/coredns/coredns/request"
+	"strings"
 
 	"github.com/miekg/dns"
 )
@@ -20,31 +20,31 @@ var log = clog.NewWithPlugin("adblock")
 
 // Adblock is an adblock plugin to show how to write a plugin.
 type Adblock struct {
-	Next plugin.Handler
-  Domains []string
+	Next    plugin.Handler
+	Domains []string
 }
 
 // ServeDNS implements the plugin.Handler interface. This method gets called when adblock is used
 // in a Server.
 func (e Adblock) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dns.Msg) (int, error) {
-  state := request.Request{W: w, Req: r}
+	state := request.Request{W: w, Req: r}
 	qname := state.Name()
 
 	// Export metric with the server label set to the current server handling the request.
 	requestCount.WithLabelValues(metrics.WithServer(ctx)).Inc()
 
-  for _, domain := range e.Domains {
-    if strings.HasSuffix(qname, domain) {
-      log.Debugf("Blocking domain: %s\nRequest: %s", domain, qname)
-      	m := new(dns.Msg)
-        m.SetRcode(r, dns.RcodeNameError) // NXDOMAIN response code
+	for _, domain := range e.Domains {
+		if strings.HasSuffix(qname, domain) {
+			log.Debugf("Blocking domain: %s\nRequest: %s", domain, qname)
+			m := new(dns.Msg)
+			m.SetRcode(r, dns.RcodeNameError) // NXDOMAIN response code
 
-        w.WriteMsg(m)
-        return dns.RcodeNameError, nil
-    }
+			w.WriteMsg(m)
+			return dns.RcodeNameError, nil
+		}
 
-  }
-  log.Debugf("Allowing Request: %s", qname)
+	}
+	log.Debugf("Allowing Request: %s", qname)
 	pw := NewResponsePrinter(w)
 
 	// Call next plugin (if any).
@@ -68,4 +68,3 @@ func NewResponsePrinter(w dns.ResponseWriter) *ResponsePrinter {
 func (r *ResponsePrinter) WriteMsg(res *dns.Msg) error {
 	return r.ResponseWriter.WriteMsg(res)
 }
-
