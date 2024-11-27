@@ -8,7 +8,7 @@ import (
 
 var url = "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
 
-// Download the list of domains to block
+// Download and parse the list of domains to block
 func Download() ([]string, error) {
 
 	response, err := http.Get(url)
@@ -27,6 +27,7 @@ func Download() ([]string, error) {
 	for _, row := range rows {
 		if bytes.HasPrefix(row, []byte("0.0.0.0")) {
 			columns := bytes.Split(row, []byte(" "))
+			// All domains should have a trailing '.' (e.g. google.com.)
 			domains = append(domains, string(columns[1])+".")
 		}
 	}
